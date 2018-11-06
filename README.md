@@ -1,1 +1,1 @@
-# se-streaming-app
+# Dotify
