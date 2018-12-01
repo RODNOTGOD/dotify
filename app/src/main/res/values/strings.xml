@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">dotify</string>
+    <string name="app_name">Dotify</string>
     <string name="music_prev">prev</string>
     <string name="music_play">play</string>
     <string name="music_next">next</string>
