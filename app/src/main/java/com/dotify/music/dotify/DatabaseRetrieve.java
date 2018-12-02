@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class RetrieveMusic extends AsyncTask<String, JSONArray, JSONArray> {
+public class DatabaseRetrieve extends AsyncTask<String, JSONArray, JSONArray> {
 
     @Override
     protected JSONArray doInBackground(String... strings) {
