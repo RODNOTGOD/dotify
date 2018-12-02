@@ -37,23 +37,25 @@ public class NewsFeed extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.newsfeed_display, container, false);
-
         ArrayList<HashMap<String, String>> articlesAdapted = new ArrayList<>();
-
         JSONArray articles = getArticles();
-        if (articles != null) {
-            for (int i = 0; i < articles.length(); i++) {
-                try {
-                    HashMap<String, String> article = new HashMap<>();
-                    JSONObject item = articles.getJSONObject(i);
-                    article.put("id", item.getString("ArticleId"));
-                    article.put("title", item.getString("Title"));
-                    articlesAdapted.add(article);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
+        if (articles == null) {
+            return ErrorDisplay.displayError("Failed to connect server", this, R.id.main_feed_fragment);
+        }
+
+
+        for (int i = 0; i < articles.length(); i++) {
+            try {
+                HashMap<String, String> article = new HashMap<>();
+                JSONObject item = articles.getJSONObject(i);
+                article.put("id", item.getString("ArticleId"));
+                article.put("title", item.getString("Title"));
+                articlesAdapted.add(article);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
         }
 
         ListView articleView = rootView.findViewById(R.id.news_articles);
