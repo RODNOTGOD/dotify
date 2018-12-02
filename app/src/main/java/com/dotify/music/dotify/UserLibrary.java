@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -16,9 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -49,7 +46,6 @@ public class UserLibrary extends Fragment {
                 Artist artist = builtLibrary.get(key);
                 HashMap<String, String> item = new HashMap<>();
                 item.put("artist", artist.getName());
-                item.put("additional", "hello");
                 adaptedArtists.add(item);
             }
 
@@ -75,7 +71,7 @@ public class UserLibrary extends Fragment {
     }
 
     private JSONArray getSongs() {
-        RetrieveMusic music = new RetrieveMusic();
+        DatabaseRetrieve music = new DatabaseRetrieve();
         try {
             music.execute("http://192.168.1.160:8080/getAllSongs.php");
             return music.get(1000, TimeUnit.MILLISECONDS);
