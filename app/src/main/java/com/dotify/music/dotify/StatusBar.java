@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,16 +28,22 @@ public class StatusBar extends Fragment {
         Button libraryBtn = rootView.findViewById(R.id.library_btn);
         Button settingsBtn = rootView.findViewById(R.id.settings_btn);
 
-        newFeedBtn.setOnClickListener(v -> {
-            System.out.println("NEWSFEED CLICKED");
-        });
-        libraryBtn.setOnClickListener(v -> {
-            System.out.println("LIBRARY CLICKED");
-        });
-        settingsBtn.setOnClickListener(v -> {
-            System.out.println("SETTINGS CLICKED");
-        });
+        newFeedBtn.setOnClickListener(v -> openFeed(R.id.newsfeed_fragment, new NewsFeed()));
+        libraryBtn.setOnClickListener(v -> openFeed(R.id.library_feed, new MusicLibrary()));
+        settingsBtn.setOnClickListener(v -> System.out.println("SETTINGS CLICKED"));
 
         return rootView;
+    }
+
+    void openFeed(int fragmentId, Fragment newFragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        assert fragmentManager != null;
+        Fragment fragment = fragmentManager.findFragmentById(fragmentId);
+        if (fragment == null || !fragment.isVisible()) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.add(R.id.main_feed_fragment, newFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 }
