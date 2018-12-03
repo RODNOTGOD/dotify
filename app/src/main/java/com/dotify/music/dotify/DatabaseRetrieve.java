@@ -15,19 +15,24 @@ import java.net.URL;
 
 public class DatabaseRetrieve extends AsyncTask<String, JSONArray, JSONArray> {
 
+    private static final String SERVER_IP = "10.100.118.104";
+    private static final String TAG = "DBRetrieve";
+
     @Override
     protected JSONArray doInBackground(String... strings) {
+        String urlString = "http://" + SERVER_IP + "/" + strings[0];
         String result = "";
         InputStream is = null;
 
         try {
-            URL url = new URL(strings[0]);
+            Log.i(TAG, "Connecting to " + urlString);
+            URL url = new URL(urlString);
             HttpURLConnection urlConnection;
             urlConnection = (HttpURLConnection) url.openConnection();
             is = urlConnection.getInputStream();
-            Log.i("log_tag", "CONNECTION FINISHED");
+            Log.i(TAG, "CONNECTION FINISHED");
         } catch(Exception e){
-            Log.e("log_tag", "Error in http connection "+e.toString());
+            Log.e(TAG, "Error in http connection "+e.toString());
         }
 
         //convert response to string
@@ -41,18 +46,18 @@ public class DatabaseRetrieve extends AsyncTask<String, JSONArray, JSONArray> {
             is.close();
 
             result=sb.toString();
-            Log.i("log_tag", "READ FINISHED");
+            Log.i(TAG, "READ FINISHED");
         }catch(Exception e){
-            Log.e("log_tag", "Error converting result "+e.toString());
+            Log.e(TAG, "Error converting result "+e.toString());
         }
 
         //parse json data
         try{
             JSONArray jsonArray = new JSONArray(result);
-            Log.i("log_tag", "JSON BUILD FINISHED");
+            Log.i(TAG, "JSON BUILD FINISHED");
             return jsonArray;
         } catch(JSONException e){
-            Log.e("log_tag", "Error parsing data "+e.toString());
+            Log.e(TAG, "Error parsing data "+e.toString());
         }
 
         return null;

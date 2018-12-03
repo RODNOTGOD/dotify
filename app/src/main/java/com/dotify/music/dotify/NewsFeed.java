@@ -88,7 +88,7 @@ public class NewsFeed extends Fragment {
         JSONArray rv = null;
         try {
             DatabaseRetrieve retriever  = new DatabaseRetrieve();
-            retriever.execute("http://192.168.1.160:8080/getArticleTitles.php");
+            retriever.execute("getArticleTitles.php");
             rv = retriever.get(1000, TimeUnit.MILLISECONDS);
         } catch (ExecutionException | InterruptedException | TimeoutException e) {
             e.printStackTrace();

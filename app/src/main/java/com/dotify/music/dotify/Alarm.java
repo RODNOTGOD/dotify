@@ -1,8 +1,10 @@
 package com.dotify.music.dotify;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,25 +15,49 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class Alarm extends AppCompatActivity {
 
-    PendingIntent pendingIntent;
-    AlarmManager alarmManager;
+    private static final int ALARM_ACTIVITY = 10001;
+    private PendingIntent pendingIntent;
+    private AlarmManager alarmManager;
+    private boolean exists;
+    private int id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_builder);
+
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        exists = false;
+        id = -1;
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            exists = bundle.getBoolean("exists");
+            id = bundle.getInt("id");
+        }
+
         Button deleteAlarmBtn = findViewById(R.id.delete_alarm);
-        deleteAlarmBtn.setOnClickListener((v) -> deleteAlarm());
+        TimePicker alarmTimePicker = findViewById(R.id.timePicker);
+
+        if (exists) {
+            AlarmDatabase db = new AlarmDatabase(this);
+            HashMap<String, Integer> time = db.getAlarm(id);
+            if (time != null) {
+                alarmTimePicker.setCurrentHour(time.get("hour"));
+                alarmTimePicker.setCurrentMinute(time.get("minute"));
+            }
+        }
+
+        deleteAlarmBtn.setOnClickListener((v) -> deleteAlarm(id));
     }
 
     @Override
     public void onBackPressed() {
         saveAndSetAlarm();
-        super.onBackPressed();
     }
 
     private void saveAndSetAlarm() {
@@ -40,9 +66,17 @@ public class Alarm extends AppCompatActivity {
         int minute = alarmTimePicker.getCurrentMinute();
         saveAlarm(hour, minute);
         setAlarm(hour, minute);
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 
     private void saveAlarm(int hour, int minute) {
+        AlarmDatabase db = new AlarmDatabase(this);
+        if (!exists) {
+            db.addAlarm(hour, minute);
+        } else {
+            db.updateAlarm(id, hour, minute);
+        }
     }
 
     private void setAlarm(int hour, int minute) {
@@ -71,7 +105,10 @@ public class Alarm extends AppCompatActivity {
         }
     }
 
-    private void deleteAlarm() {
+    private void deleteAlarm(int id) {
+        AlarmDatabase db = new AlarmDatabase(this);
+        db.dropAlarm(id);
+        setResult(Activity.RESULT_OK);
         finish();
     }
 }

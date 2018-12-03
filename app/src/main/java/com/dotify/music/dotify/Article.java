@@ -64,8 +64,7 @@ public class Article extends AppCompatActivity {
         JSONArray rv = null;
         try {
             DatabaseRetrieve retriever = new DatabaseRetrieve();
-            System.out.println("http://192.168.1.160:8080/getArticleText.php?id=" + id);
-            retriever.execute("http://192.168.1.160:8080/getArticleText.php?id=" + id);
+            retriever.execute("getArticleText.php?id=" + id);
             rv = retriever.get(1000, TimeUnit.MILLISECONDS);
         } catch (ExecutionException | InterruptedException | TimeoutException e) {
             e.printStackTrace();
