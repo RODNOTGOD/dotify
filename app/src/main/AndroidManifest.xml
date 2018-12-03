@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".MusicPlayer"></activity>
         <activity android:name=".Article"></activity>
+        <activity android:name=".Alarm"></activity>
+        <receiver android:name=".AlarmReceiver"></receiver>
     </application>
 
 </manifest>

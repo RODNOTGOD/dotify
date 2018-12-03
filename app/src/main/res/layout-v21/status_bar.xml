@@ -22,11 +22,12 @@
             android:translationZ="0dp"
             android:background="#59000000"/>
         <ImageView
+            android:padding="5dp"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_gravity="center"
             android:scaleType="fitXY"
-            android:src="@drawable/newsfeed_dark"
+            android:src="@drawable/news"
             android:elevation="2dp"
             android:translationZ="2dp"/>
     </FrameLayout>
@@ -42,6 +43,7 @@
             android:translationZ="0dp"
             android:background="#59000000" />
         <ImageView
+            android:padding="5dp"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_gravity="center"
@@ -62,11 +64,12 @@
             android:translationZ="0dp"
             android:background="#59000000"/>
         <ImageView
+            android:padding="5dp"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:scaleType="fitXY"
             android:layout_gravity="center"
-            android:src="@drawable/newsfeed_dark"
+            android:src="@drawable/clock"
             android:elevation="2dp"
             android:translationZ="2dp"/>
     </FrameLayout>

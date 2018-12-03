@@ -30,7 +30,7 @@ public class StatusBar extends Fragment {
 
         newFeedBtn.setOnClickListener(v -> openFeed(R.id.newsfeed_fragment, new NewsFeed()));
         libraryBtn.setOnClickListener(v -> openFeed(R.id.library_feed, new MusicLibrary()));
-        settingsBtn.setOnClickListener(v -> System.out.println("SETTINGS CLICKED"));
+        settingsBtn.setOnClickListener(v -> openFeed(R.id.alarm_feed, new AlarmFeed()));
 
         return rootView;
     }
