@@ -63,7 +63,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:scaleType="fitXY"
-            android:src="@drawable/music_next_background"
+            android:src="@drawable/clock"
             android:elevation="2dp"
             android:translationZ="2dp"/>
     </FrameLayout>

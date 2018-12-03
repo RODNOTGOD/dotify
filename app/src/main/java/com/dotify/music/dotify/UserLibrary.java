@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,6 @@ import java.util.concurrent.TimeoutException;
 public class UserLibrary extends Fragment {
 
     private JSONArray userLibrary;
-
 
     @Nullable
     @Override
@@ -73,7 +73,7 @@ public class UserLibrary extends Fragment {
     private JSONArray getSongs() {
         DatabaseRetrieve music = new DatabaseRetrieve();
         try {
-            music.execute("http://192.168.1.160:8080/getAllSongs.php");
+            music.execute("getAllSongs.php");
             return music.get(1000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             e.printStackTrace();
