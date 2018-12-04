@@ -28,7 +28,7 @@ public class Album {
     public void setDate(String date) {
     }
 
-    public void addSong(String songName) {
-        songs.put(songName, new Song(songName));
+    public void addSong(String songName, String url) {
+        songs.put(songName, new Song(songName, url));
     }
 }

@@ -1,5 +1,10 @@
 package com.dotify.music.dotify;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +20,7 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -31,6 +37,7 @@ public class UserLibrary extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.user_library, container, false);
+
         JSONArray userLibrary = getSongs();
         if (userLibrary == null){
             rootView = ErrorDisplay.displayError("Failed to connect to server", this, R.id.main_feed_fragment);
@@ -83,13 +90,14 @@ public class UserLibrary extends Fragment {
 
     private HashMap<String, Artist> buildLibrary(@NonNull JSONArray data){
         HashMap<String, Artist> discography = new HashMap<>();
-        String artistName, albumName, songName;
+        String artistName, albumName, songName, songUrl;
 
         for (int i = 0; i < data.length(); i++) {
             try {
                 artistName = data.getJSONObject(i).getString("artist");
                 albumName = data.getJSONObject(i).getString("album");
                 songName = data.getJSONObject(i).getString("song");
+                songUrl = data.getJSONObject(i).getString("url");
             } catch (JSONException e) {
                 e.printStackTrace();
                 continue;
@@ -97,7 +105,7 @@ public class UserLibrary extends Fragment {
             Artist artist = discography.get(artistName);
             if (artist == null) artist = new Artist(artistName);
             Album album = artist.addAlbumIfEmpty(albumName);
-            album.addSong(songName);
+            album.addSong(songName, songUrl);
             artist.updateAlbum(album);
             discography.put(artistName, artist);
         }
@@ -143,13 +151,28 @@ public class UserLibrary extends Fragment {
             HashMap<String, String> songs = new HashMap<>();
             Song song = songList.get(songTitle);
             songs.put("_song", songTitle);
+            songs.put("url", song.getUrl());
             adaptedSongs.add(songs);
         }
 
         String[] from = {"_song"};
         int[] to = {R.id.artist_display_title};
-        SimpleAdapter adapter = new SimpleAdapter(getContext(), adaptedSongs, R.layout.artist_display, from, to);
+        SimpleAdapter adapter = new SimpleAdapter(getContext(), adaptedSongs, R.layout.artist_display, from, to) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view =  super.getView(position, convertView, parent);
+                TextView textView = view.findViewById(R.id.artist_display_title);
+                textView.setOnClickListener((v) -> playSong(adaptedSongs.get(position).get("url")));
+                return view;
+            }
+        };
         gridView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    private void playSong(String songUrl) {
+        System.out.println("PLAYING:" + songUrl);
+        Intent intent = new Intent(getContext(), MusicPlayer.class);
+        startActivity(intent);
     }
 }
