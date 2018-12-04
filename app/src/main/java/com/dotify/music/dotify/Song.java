@@ -38,6 +38,20 @@ public class Song {
         this.songGenre = songGenre;
     }
 
+    //quick demo constructor
+    public Song(String songName, String artistName)
+    {
+        this.songName = songName;
+        this.setSongArtist(new Artist(artistName));
+    }
+
+    //quick demo constructor
+    public Song(String songName)
+    {
+        this.songName = songName;
+        this.setSongArtist(new Artist("Unknown Artist"));
+    }
+
     //getters
     public String getSongName(){
         return songName;
@@ -73,8 +87,8 @@ public class Song {
 
     public void print(){
         System.out.println("Song Name: " + songName);
-        System.out.println("Album Name: " + songAlbum.getAlbumName());
-        System.out.println("Artist Name: " + songArtist.getArtistName());
+        System.out.println("Album Name: " + songAlbum.getTitle());
+        System.out.println("Artist Name: " + songArtist.getName());
         System.out.println("Song ID: " + songId);
         System.out.println("Song Length: " + songLength);
         System.out.println("Song Genre: " + songGenre);

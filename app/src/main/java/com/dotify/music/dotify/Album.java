@@ -5,9 +5,6 @@ import java.util.HashMap;
 public class Album {
     private String title;
     private Artist artist;
-    private double length;
-    private String genre;
-    private String date;
     private HashMap<String, Song> songs;
 
     //default constructor
@@ -22,13 +19,6 @@ public class Album {
         return title;
     }
 
-    public double getlength(){
-        return length;
-    }
-
-    public String getgenre(){
-        return genre;
-    }
 
     public HashMap<String,Song> getSongs(){
         return songs;
@@ -46,18 +36,13 @@ public class Album {
         this.title = title;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public void addSong(String songName) {
         songs.put(songName, new Song(songName));
+    }
 
     public void print(){
         System.out.println("Album Title: " + title);
         System.out.println("Album Artist: " + artist.getName());
-        System.out.println("Album Length: " + length);
-        System.out.println("Album Genre: " + genre);
         }
 
 }
