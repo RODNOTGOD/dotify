@@ -1,5 +1,6 @@
 package com.dotify.music.dotify;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class MusicStatusBar extends Fragment {
+
+    public boolean songLoaded;
+
+    public MusicStatusBar() {
+        songLoaded = false;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

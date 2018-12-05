@@ -15,7 +15,7 @@ import java.net.URL;
 
 public class DatabaseRetrieve extends AsyncTask<String, JSONArray, JSONArray> {
 
-    private static final String SERVER_IP = "10.100.118.104";
+    public static final String SERVER_IP = "192.168.1.160:8080";
     private static final String TAG = "DBRetrieve";
 
     @Override
