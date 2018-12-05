@@ -1,5 +1,6 @@
 package com.dotify.music.dotify;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,6 +34,7 @@ public class MusicLibrary extends Fragment {
         Button library = rootView.findViewById(R.id.user_library);
         Button top40 = rootView.findViewById(R.id.top_40);
         Button playlist = rootView.findViewById(R.id.user_playlist);
+        Button settings = rootView.findViewById(R.id.settings);
 
         library.setOnClickListener((v) -> {
             Fragment userLibrary = new UserLibrary();
@@ -52,6 +54,16 @@ public class MusicLibrary extends Fragment {
         playlist.setOnClickListener((v) -> {
             System.out.println("SHOW PLAYLIST");
         });
+
+        settings.setOnClickListener((v) -> {
+            System.out.println("SHOW SETTINGS");
+            //openSettingsActivity();
+        });
         return rootView;
+    }
+
+    private void openSettingsActivity() {
+        Intent intent = new Intent(getActivity(), SettingsActivity.class);
+        startActivity(intent);
     }
 }
