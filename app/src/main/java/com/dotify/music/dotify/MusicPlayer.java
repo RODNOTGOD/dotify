@@ -5,19 +5,20 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class MusicPlayer extends AppCompatActivity {
 
-    static final String SERVER_IP = DatabaseRetrieve.SERVER_IP;
+    Player player;
 
-    static MediaPlayer player = new MediaPlayer();
-    static boolean initialStage = true;
-
-    boolean playPause;
+    TextView artistText;
+    TextView currentSongText;
 
     ImageView albumartView;
     ImageView playView;
@@ -35,7 +36,11 @@ public class MusicPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.music_player);
 
-        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        player = Player.getInstance();
+        musicStatus = MusicListenStatus.PLAYING;
+
+        artistText = findViewById(R.id.textView);
+        currentSongText = findViewById(R.id.textView2);
 
         albumartView = findViewById(R.id.albumart_view);
         playView = findViewById(R.id.player_view);
@@ -44,50 +49,30 @@ public class MusicPlayer extends AppCompatActivity {
         playBtn = findViewById(R.id.musicplayer_play);
         nextBtn = findViewById(R.id.musicplayer_next);
 
-        musicStatus = MusicListenStatus.PAUSE;
+        Song song = player.getCurrentSong();
+        currentSongText.setText(song.getTitle());
 
-        String[] queue = null;
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            queue = bundle.getStringArray("queue");
-        }
-
-        String[] finalQueue = queue;
         playBtn.setOnClickListener((v) -> {
             if (musicStatus == MusicListenStatus.PAUSE) {
                 playView.setImageResource(R.drawable.music_pause_light);
                 musicStatus = MusicListenStatus.PLAYING;
+                player.play();
             } else {
                 playView.setImageResource(R.drawable.music_play_light);
                 musicStatus = MusicListenStatus.PAUSE;
+                player.pause();
             }
-            toggleMusic(finalQueue);
         });
+
+        prevBtn.setOnClickListener((v) -> prevSong());
+        nextBtn.setOnClickListener((v) -> nextSong());
     }
 
-    private void toggleMusic(String[] queue) {
-        if (queue == null) return;
-        if (!playPause) {
-            if (initialStage) {
-                try {
-                    player.setDataSource("http://" + SERVER_IP + "/" + queue[0]);
-                    player.setOnPreparedListener((mp) -> {
-                        mp.start();
-                        initialStage = false;
-                    });
-                    player.prepareAsync();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                if (!player.isPlaying())
-                    player.start();
-            }
-            playPause = true;
-        } else {
-            if (player.isPlaying())
-                player.pause();
-            playPause = false;
-        }
+    private void prevSong() {
+        player.previous();
+    }
+
+    private void nextSong() {
+        player.next();
     }
 }

@@ -12,6 +12,12 @@ import android.widget.TextView;
 
 public class MusicStatusBar extends Fragment {
 
+    public boolean songLoaded;
+
+    public MusicStatusBar() {
+        songLoaded = false;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +29,9 @@ public class MusicStatusBar extends Fragment {
         View rootView = inflater.inflate(R.layout.music_statusbar, container, false);
         TextView textView = rootView.findViewById(R.id.music_statusbar_fragment);
         textView.setOnClickListener(v -> { openMusicActivity(); });
+        if (!songLoaded) {
+            rootView.setVisibility(View.GONE);
+        }
         return rootView;
     }
 

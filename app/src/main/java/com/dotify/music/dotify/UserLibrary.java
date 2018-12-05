@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -94,10 +95,11 @@ public class UserLibrary extends Fragment {
 
         for (int i = 0; i < data.length(); i++) {
             try {
-                artistName = data.getJSONObject(i).getString("artist");
-                albumName = data.getJSONObject(i).getString("album");
-                songName = data.getJSONObject(i).getString("song");
-                songUrl = data.getJSONObject(i).getString("url");
+                JSONObject item = data.getJSONObject(i);
+                artistName = item.getString("artist");
+                albumName = item.getString("album");
+                songName = item.getString("song");
+                songUrl = item.getString("url");
             } catch (JSONException e) {
                 e.printStackTrace();
                 continue;
@@ -151,7 +153,7 @@ public class UserLibrary extends Fragment {
             HashMap<String, String> songs = new HashMap<>();
             Song song = songList.get(songTitle);
             songs.put("_song", songTitle);
-            songs.put("url", song.getUrl());
+            songs.put("key", songTitle);
             adaptedSongs.add(songs);
         }
 
@@ -162,7 +164,7 @@ public class UserLibrary extends Fragment {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view =  super.getView(position, convertView, parent);
                 TextView textView = view.findViewById(R.id.artist_display_title);
-                textView.setOnClickListener((v) -> playSong(adaptedSongs.get(position).get("url")));
+                textView.setOnClickListener((v) -> playSong(songList.get(adaptedSongs.get(position).get("key"))));
                 return view;
             }
         };
@@ -170,9 +172,10 @@ public class UserLibrary extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    private void playSong(String songUrl) {
-        System.out.println("PLAYING:" + songUrl);
+    private void playSong(Song song) {
         Intent intent = new Intent(getContext(), MusicPlayer.class);
+        Player player = Player.getInstance();
+        player.buildQueue(new Song[]{song});
         startActivity(intent);
     }
 }

@@ -20,20 +20,9 @@ public class MainActivity extends AppCompatActivity {
     private void addStartupFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        MusicLibrary musicLibrary = new MusicLibrary();
-        transaction.add(R.id.main_feed_fragment, musicLibrary);
+        NewsFeed newsFeed = new NewsFeed();
+        transaction.add(R.id.main_feed_fragment, newsFeed);
         transaction.commit();
 
-    }
-
-    public void switchToUserLibrary(UserLibrary thing) {
-        Fragment userLibrary = new UserLibrary();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        String tag = "library";
-        transaction.add(R.id.main_feed_fragment, userLibrary, tag);
-        transaction.addToBackStack(tag);
-
-        transaction.commit();
     }
 }
