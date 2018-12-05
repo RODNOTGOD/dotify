@@ -20,6 +20,7 @@ class Player {
     private ArrayList<Song> queue;
     private ListIterator<Song> listIterator;
     private Song currSong;
+    private boolean playNextImmediately;
 
     static Player getInstance() {
         return ourInstance;
@@ -70,12 +71,27 @@ class Player {
     private void prepareSong(Song song) {
         try {
             Log.d("MusicStream", "Streaming http://" + SERVER_IP + "/music/" + song.getUrl());
+            if (initialized) {
+                player.stop();
+                player.reset();
+                initialized = false;
+            }
             player.setDataSource("http://" + SERVER_IP + "/music/" + song.getUrl());
-            player.setOnPreparedListener((mp) -> initialized = true);
+            player.setOnPreparedListener((mp) -> {
+                if (playNextImmediately) {
+                    playNextImmediately = false;
+                    mp.start();
+                }
+                initialized = true;
+            });
             player.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void playNewSelected() {
+        playNextImmediately = true;
     }
 
     public void play() {
@@ -84,7 +100,15 @@ class Player {
     }
 
     public void pause() {
-        if (initialized)
+        if (player.isPlaying() && initialized)
             player.pause();
+    }
+
+    public boolean isPlaying() {
+        return initialized && player.isPlaying();
+    }
+
+    public boolean setToPlay() {
+        return playNextImmediately;
     }
 }

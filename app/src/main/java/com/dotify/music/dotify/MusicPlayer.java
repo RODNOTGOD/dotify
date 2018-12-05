@@ -1,17 +1,13 @@
 package com.dotify.music.dotify;
 
-import android.media.AudioManager;
-import android.media.MediaPlayer;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.util.Arrays;
 
 public class MusicPlayer extends AppCompatActivity {
 
@@ -37,7 +33,6 @@ public class MusicPlayer extends AppCompatActivity {
         setContentView(R.layout.music_player);
 
         player = Player.getInstance();
-        musicStatus = MusicListenStatus.PLAYING;
 
         artistText = findViewById(R.id.textView);
         currentSongText = findViewById(R.id.textView2);
@@ -50,7 +45,13 @@ public class MusicPlayer extends AppCompatActivity {
         nextBtn = findViewById(R.id.musicplayer_next);
 
         Song song = player.getCurrentSong();
-        currentSongText.setText(song.getTitle());
+        if (song != null)
+            currentSongText.setText(song.getTitle());
+
+        if (player.isPlaying() || player.setToPlay()) {
+            musicStatus = MusicListenStatus.PLAYING;
+            playView.setImageResource(R.drawable.music_pause_light);
+        }
 
         playBtn.setOnClickListener((v) -> {
             if (musicStatus == MusicListenStatus.PAUSE) {
@@ -74,5 +75,11 @@ public class MusicPlayer extends AppCompatActivity {
 
     private void nextSong() {
         player.next();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 }

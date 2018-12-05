@@ -1,5 +1,6 @@
 package com.dotify.music.dotify;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -33,11 +34,14 @@ import java.util.concurrent.TimeoutException;
 public class UserLibrary extends Fragment {
 
     private JSONArray userLibrary;
+    private TextView music_statusbar;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.user_library, container, false);
+
+        music_statusbar = getActivity().findViewById(R.id.music_statusbar_fragment);
 
         JSONArray userLibrary = getSongs();
         if (userLibrary == null){
@@ -176,6 +180,18 @@ public class UserLibrary extends Fragment {
         Intent intent = new Intent(getContext(), MusicPlayer.class);
         Player player = Player.getInstance();
         player.buildQueue(new Song[]{song});
-        startActivity(intent);
+        player.playNewSelected();
+        startActivityForResult(intent, 10002);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 10002 && resultCode == Activity.RESULT_OK) {
+            Player player = Player.getInstance();
+            Song song = player.getCurrentSong();
+            if (song != null)
+                music_statusbar.setText(song.getTitle());
+        }
     }
 }
