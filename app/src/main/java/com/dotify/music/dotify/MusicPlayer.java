@@ -45,23 +45,29 @@ public class MusicPlayer extends AppCompatActivity {
         nextBtn = findViewById(R.id.musicplayer_next);
 
         Song song = player.getCurrentSong();
-        if (song != null)
+        if (song != null) {
+            artistText.setText(song.getArtist());
             currentSongText.setText(song.getTitle());
+        }
 
         if (player.isPlaying() || player.setToPlay()) {
             musicStatus = MusicListenStatus.PLAYING;
             playView.setImageResource(R.drawable.music_pause_light);
+        } else {
+            musicStatus = MusicListenStatus.PAUSE;
         }
 
         playBtn.setOnClickListener((v) -> {
-            if (musicStatus == MusicListenStatus.PAUSE) {
-                playView.setImageResource(R.drawable.music_pause_light);
-                musicStatus = MusicListenStatus.PLAYING;
-                player.play();
-            } else {
-                playView.setImageResource(R.drawable.music_play_light);
-                musicStatus = MusicListenStatus.PAUSE;
-                player.pause();
+            if (player.isInitialized()) {
+                if (musicStatus == MusicListenStatus.PAUSE) {
+                    playView.setImageResource(R.drawable.music_pause_light);
+                    musicStatus = MusicListenStatus.PLAYING;
+                    player.play();
+                } else {
+                    playView.setImageResource(R.drawable.music_play_light);
+                    musicStatus = MusicListenStatus.PAUSE;
+                    player.pause();
+                }
             }
         });
 

@@ -36,6 +36,7 @@ class Player {
     }
 
     public void buildQueue(Song[] songs) {
+        queue.clear();
         queue.addAll(Arrays.asList(songs));
         listIterator = queue.listIterator();
         songsLoaded = true;
@@ -52,7 +53,7 @@ class Player {
 
     public Song next() {
         Song nextSong = null;
-        if (listIterator.hasNext()) {
+        if (listIterator != null && listIterator.hasNext()) {
             nextSong = listIterator.next();
             prepareSong(nextSong);
         }
@@ -61,7 +62,7 @@ class Player {
 
     public Song previous() {
         Song prevSong = null;
-        if (listIterator.hasPrevious()) {
+        if (listIterator != null && listIterator.hasPrevious()) {
             prevSong = listIterator.previous();
             prepareSong(prevSong);
         }
@@ -71,11 +72,9 @@ class Player {
     private void prepareSong(Song song) {
         try {
             Log.d("MusicStream", "Streaming http://" + SERVER_IP + "/music/" + song.getUrl());
-            if (initialized) {
-                player.stop();
-                player.reset();
-                initialized = false;
-            }
+            player.stop();
+            player.reset();
+            initialized = false;
             player.setDataSource("http://" + SERVER_IP + "/music/" + song.getUrl());
             player.setOnPreparedListener((mp) -> {
                 if (playNextImmediately) {
@@ -110,5 +109,9 @@ class Player {
 
     public boolean setToPlay() {
         return playNextImmediately;
+    }
+
+    public boolean isInitialized() {
+        return initialized;
     }
 }
