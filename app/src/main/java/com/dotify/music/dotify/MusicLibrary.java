@@ -56,8 +56,7 @@ public class MusicLibrary extends Fragment {
         });
 
         settings.setOnClickListener((v) -> {
-            System.out.println("SHOW SETTINGS");
-            //openSettingsActivity();
+            openSettingsActivity();
         });
         return rootView;
     }
