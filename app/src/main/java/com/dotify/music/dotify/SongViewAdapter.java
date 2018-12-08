@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class SongViewAdapter extends RecyclerView.Adapter<SongViewAdapter.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
-    private ArrayList<Song> mSongs = new ArrayList<>();
+    private ArrayList<Song> mSongs;
 
     public SongViewAdapter(ArrayList<Song> mSongs) {
         this.mSongs = mSongs;
@@ -32,7 +32,7 @@ public class SongViewAdapter extends RecyclerView.Adapter<SongViewAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         Log.d(TAG,"onBindViewHolder: called.");
         holder.songTitle.setText(mSongs.get(i).getSongName());
-        holder.songTitle.setText(mSongs.get(i).getSongArtist().getName());
+        holder.artistName.setText(mSongs.get(i).getSongArtist().getName());
 
         holder.playButton.setOnClickListener(new View.OnClickListener () {
             @Override
@@ -56,6 +56,7 @@ public class SongViewAdapter extends RecyclerView.Adapter<SongViewAdapter.ViewHo
 
     @Override
     public int getItemCount() {
+        System.out.println("item count is " + mSongs.size());
         return mSongs.size();
     }
 

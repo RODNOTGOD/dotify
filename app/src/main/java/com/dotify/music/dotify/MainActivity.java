@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static CharSequence searchTerm = "";
+    public static CharSequence searchTerm = "meep";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

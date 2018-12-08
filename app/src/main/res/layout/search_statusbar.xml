@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <SearchView
+        android:id="@+id/search_statusbar_fragment"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/music_button_pressed_background" />

@@ -3,6 +3,7 @@ package com.dotify.music.dotify;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
@@ -18,8 +19,17 @@ public class Search extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
         searchTermLabel = findViewById(R.id.searchTermString);
+        searchTermLabel.setText(MainActivity.searchTerm);
+
         initSongs();
+
         RecyclerView recyclerView = findViewById(R.id.searchResultsRecycleView);
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
         SongViewAdapter adapter = new SongViewAdapter(mSongs);
         recyclerView.setAdapter(adapter);
     }
