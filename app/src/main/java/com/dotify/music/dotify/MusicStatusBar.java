@@ -29,7 +29,7 @@ public class MusicStatusBar extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.music_statusbar, container, false);
         TextView textView = rootView.findViewById(R.id.music_statusbar_fragment);
-        textView.setOnClickListener(v -> { openMusicActivity(); });
+        textView.setOnClickListener(v -> openMusicActivity());
         return rootView;
     }
 
