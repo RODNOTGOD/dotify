@@ -1,5 +1,6 @@
 package com.dotify.music.dotify;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -22,14 +23,14 @@ public class Register extends AppCompatActivity {
     String firstName;
     String lastName;
     String email;
-    String username;    //can also be an email
+    String username;
     String password;
     String password2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_display);
+        setContentView(R.layout.register_display);
 
         //link elements to xml
         registerButton = findViewById(R.id.registerButton);
@@ -47,7 +48,8 @@ public class Register extends AppCompatActivity {
             //if taken, display error message
             //otherwise, create user and go to newsfeed
             System.out.println("Register Button Clicked!");
-            setContentView(R.layout.activity_main);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         });
     }
 }

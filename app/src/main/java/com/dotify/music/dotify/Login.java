@@ -1,8 +1,7 @@
 package com.dotify.music.dotify;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +39,7 @@ public class Login extends AppCompatActivity {
         errorMessage.setText("");
 
         loginButton.setOnClickListener((v) -> {
+            System.out.println("login button pushed!");
             //check if credentials are valid
             username = emailEdit.getText().toString();
             password = passwordEdit.getText().toString();
@@ -49,25 +49,17 @@ public class Login extends AppCompatActivity {
             //if valid, go to newsfeed
             //if not valid, display error text
             errorMessage.setText("I'm not finished yet!");
-            setContentView(R.layout.activity_main);
-            addStartupFragment();
-            System.out.println("login button pushed!");
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         });
 
         newUserButton.setOnClickListener((v) -> {
+            System.out.println("new user button pushed!");
             //goto register page
             errorMessage.setText("Go to the Register page!");
-            setContentView(R.layout.register_display);
-            System.out.println("new user button pushed!");
+            Intent intent = new Intent(this, Register.class);
+            startActivity(intent);
         });
 
-    }
-
-    private void addStartupFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        NewsFeed newsFeed = new NewsFeed();
-        transaction.add(R.id.main_feed_fragment, newsFeed);
-        transaction.commit();
     }
 }

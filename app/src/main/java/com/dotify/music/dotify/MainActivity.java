@@ -29,4 +29,10 @@ public class MainActivity extends AppCompatActivity {
         transaction.add(R.id.main_feed_fragment, newsFeed);
         transaction.commit();
     }
+
+    public void logoutButtonClicked(View v){
+        System.out.println("logout button pushed!");
+        Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
+    }
 }

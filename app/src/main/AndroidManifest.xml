@@ -23,7 +23,8 @@
         <activity android:name=".MusicPlayer" />
         <activity android:name=".Article" />
         <activity android:name=".Alarm" />
-
+        <activity android:name=".Login"/>
+        <activity android:name=".Register"/>
         <receiver android:name=".AlarmReceiver" />
 
     </application>
