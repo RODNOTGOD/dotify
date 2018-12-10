@@ -25,6 +25,7 @@
         <activity android:name=".Alarm" />
 
         <receiver android:name=".AlarmReceiver" />
+        <activity android:name=".SettingsActivity" />
 
     </application>
 
