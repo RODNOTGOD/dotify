@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    android:id="@+id/newsfeed_fragment">
+    android:clickable="true"
+    android:id="@+id/newsfeed_fragment"
+    android:focusable="true">
 
     <ListView
         android:id="@+id/news_articles"
