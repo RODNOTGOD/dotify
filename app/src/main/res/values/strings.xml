@@ -5,4 +5,5 @@
     <string name="music_next">next</string>
     <string name="play_button_description">Play or Pause music</string>
     <string name="artist_picture">artist picture</string>
+    <string name="new_user"><u>New User</u></string>
 </resources>

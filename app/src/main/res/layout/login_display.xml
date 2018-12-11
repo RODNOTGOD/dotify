@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorAccent"
     android:gravity="center"
     android:orientation="vertical">
@@ -13,38 +14,42 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:fontFamily="serif"
-        android:text="Dotify"
+        android:text="@string/app_name"
         android:textColor="@color/music_button_pressed_background"
         android:textSize="36sp" />
 
-    <TextView
-        android:id="@+id/errorMessageLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:text="error"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold" />
-
-    <EditText
+    <android.support.design.widget.TextInputLayout
         android:id="@+id/userIDBox"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@android:color/darker_gray"
-        android:ems="10"
-        android:hint="Email or username"
-        android:inputType="textPersonName" />
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:textColorHint="#999"
+        app:errorEnabled="true">
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#fff"
+            android:hint="Username"
+            android:inputType="text"/>
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
+    <android.support.design.widget.TextInputLayout
         android:id="@+id/passwordBox"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@android:color/darker_gray"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword" />
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:textColorHint="#999"
+        app:passwordToggleEnabled="true"
+        app:errorEnabled="true">
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#fff"
+            android:hint="Password"
+            android:inputType="textPassword"/>
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:id="@+id/forgotPasswordLabel"
@@ -54,6 +59,14 @@
         android:text="Forgot your password?"
         android:textColor="@color/music_button_pressed_background" />
 
+    <TextView
+        android:id="@+id/newUserButton"
+        android:layout_width="117dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="@string/new_user"
+        android:textColor="@color/music_button_pressed_background"/>
+
     <Button
         android:id="@+id/loginButton"
         android:layout_width="118dp"
@@ -61,10 +74,5 @@
         android:layout_marginTop="30dp"
         android:text="Login" />
 
-    <Button
-        android:id="@+id/newUserButton"
-        android:layout_width="117dp"
-        android:layout_height="48dp"
-        android:text="New User" />
 
 </LinearLayout>

@@ -31,7 +31,6 @@ public class Register extends AppCompatActivity {
     private TextInputLayout passwordInput;
     private TextInputLayout confirmPasswordInput;
 
-    //storage stuff
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
@@ -41,8 +40,6 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_display);
 
-        //link elements to xml
-        //xml elements
         Button registerButton = findViewById(R.id.registerButton);
         firstNameInput = findViewById(R.id.first_name_input);
         lastNameInput = findViewById(R.id.last_name_input);
@@ -56,8 +53,8 @@ public class Register extends AppCompatActivity {
             //check if username or email is already taken
             //if taken, display error message
             //otherwise, create user and go to newsfeed
-            System.out.println("Register Button Clicked!");
             if (confirmRegistration()) {
+                Log.i("Register", "New user registered");
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }
@@ -67,9 +64,7 @@ public class Register extends AppCompatActivity {
     private boolean confirmRegistration() {
         if (!(confirmFirstLastName() & confirmUsername() & confirmEmail() & confirmPassword()))
             return false;
-
-        // create the new user
-        return true;
+        return createNewUser();
     }
 
     private boolean confirmUsername() {
@@ -81,7 +76,7 @@ public class Register extends AppCompatActivity {
             rv = false;
         }
 
-        if (rv && !isUnique(username, "getUsername.php?username=")) {
+        if (rv && !isUnique(username, "isUnique.php?unique=")) {
             usernameInput.setError("Username already used");
             rv = false;
         }
@@ -161,7 +156,7 @@ public class Register extends AppCompatActivity {
             rv = false;
         }
 
-        if (rv && !isUnique(email, "getEmail.php?email=")) {
+        if (rv && !isUnique(email, "isUnique.php?unique=")) {
             emailInput.setError("Email already used");
             rv = false;
         }
@@ -193,6 +188,32 @@ public class Register extends AppCompatActivity {
             return !hasRows;
         } catch (ExecutionException | InterruptedException | TimeoutException | JSONException e) {
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean createNewUser() {
+        String firstName = firstNameInput.getEditText().getText().toString().trim();
+        String lastName = lastNameInput.getEditText().getText().toString().trim();
+        String password = passwordInput.getEditText().getText().toString().trim();
+        String username = usernameInput.getEditText().getText().toString().trim();
+        String email = emailInput.getEditText().getText().toString().trim();
+
+        DatabaseRetriever retriever = new DatabaseRetriever();
+        String url = "createUser.php?"
+                + "firstname=" + firstName + "&"
+                + "lastname=" + lastName + "&"
+                + "username=" + username + "&"
+                + "password=" + password + "&"
+                + "email=" + email;
+        retriever.execute("POST", url);
+        try {
+            JSONArray data = retriever.get(1000, TimeUnit.MILLISECONDS);
+            JSONObject object = data.getJSONObject(0);
+            return object.getBoolean("created");
+        } catch (ExecutionException | InterruptedException | TimeoutException | JSONException | NullPointerException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to create user", Toast.LENGTH_LONG).show();
             return false;
         }
     }
