@@ -55,7 +55,7 @@ public class Register extends AppCompatActivity {
             //otherwise, create user and go to newsfeed
             if (confirmRegistration()) {
                 Log.i("Register", "New user registered");
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, Login.class);
                 startActivity(intent);
             }
         });

@@ -14,12 +14,7 @@ public class User {
     private Playlist favorites;
     private ArrayList<Playlist> playlists;
 
-    public User(String firstName, String lastName, String email, String username, String hashedPassword){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    public User(String username){
         this.username = username;
-        this.hashedPassword = hashedPassword;
-        this.favorites = new Playlist("Favorites");
     }
 }

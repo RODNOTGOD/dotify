@@ -19,33 +19,36 @@ import java.util.concurrent.TimeoutException;
 
 public class Login extends AppCompatActivity {
 
-    //xml elements
-
-    TextInputLayout usernameInput;
-    TextInputLayout passwordInput;
-
-    Button loginButton;
-
-    TextView newUserButton;
-    TextView forgotPassword;
+    private TextInputLayout usernameInput;
+    private TextInputLayout passwordInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_display);
 
-        //link elements to xml
-        loginButton = findViewById(R.id.loginButton);
-        newUserButton = findViewById(R.id.newUserButton);
+        boolean isLoggedin = getSharedPreferences("SIGN", MODE_PRIVATE).getBoolean(MainActivity.SIGN_RESTORE, false);
+        if (isLoggedin) {
+            Log.i("Login", "User logged in");
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
+
+        Button loginButton = findViewById(R.id.loginButton);
+        TextView newUserButton = findViewById(R.id.newUserButton);
+        TextView forgotPassword = findViewById(R.id.forgotPasswordLabel);
         usernameInput = findViewById(R.id.userIDBox);
         passwordInput = findViewById(R.id.passwordBox);
-        forgotPassword = findViewById(R.id.forgotPasswordLabel);
 
         loginButton.setOnClickListener((v) -> {
             if (credentialsAreValid()) {
                 Log.i("Login", "User logged in");
                 Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -56,28 +59,33 @@ public class Login extends AppCompatActivity {
     }
 
     public boolean credentialsAreValid() {
+        boolean rv = true;
         String username = usernameInput.getEditText().getText().toString().trim();
         String password = passwordInput.getEditText().getText().toString().trim();
 
-        if (username.isEmpty())
+        if (username.isEmpty()) {
             usernameInput.setError("Field can't be empty");
-        else if (!credentialExists(username, "isUnique.php?unique="))
+            rv = false;
+        } else if (credentialExists(username, "isUnique.php?unique=")) {
             usernameInput.setError("User doesn't exist");
-        else
+            rv = false;
+        } else {
             usernameInput.setError(null);
+        }
 
         if (password.isEmpty()) {
             passwordInput.setError("Field can't be empty");
-        } else {
+            rv = false;
+        } else  {
             passwordInput.setError(null);
         }
 
-        if (loginUser(username, password)) {
-            return true;
-        } else {
+        if (rv && !loginUser(username, password)) {
             passwordInput.setError("Wrong password");
-            return false;
+            rv = false;
         }
+
+        return rv;
     }
 
     private boolean credentialExists(String uniqueStr, String url) {
