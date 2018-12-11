@@ -13,14 +13,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class DatabaseRetrieve extends AsyncTask<String, JSONArray, JSONArray> {
+public class DatabaseRetriever extends AsyncTask<String, JSONArray, JSONArray> {
 
     public static final String SERVER_IP = "192.168.1.160:8080";
     private static final String TAG = "DBRetrieve";
 
     @Override
     protected JSONArray doInBackground(String... strings) {
-        String urlString = "http://" + SERVER_IP + "/" + strings[0];
+        String httpMethod = strings[0]; // GET, POST, DELETE
+        String urlString = "http://" + SERVER_IP + "/" + strings[1]; // actual url to send
         String result = "";
         InputStream is = null;
 
@@ -29,6 +30,7 @@ public class DatabaseRetrieve extends AsyncTask<String, JSONArray, JSONArray> {
             URL url = new URL(urlString);
             HttpURLConnection urlConnection;
             urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod(httpMethod);
             is = urlConnection.getInputStream();
             Log.i(TAG, "CONNECTION FINISHED");
         } catch(Exception e){

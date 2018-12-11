@@ -63,8 +63,8 @@ public class Article extends AppCompatActivity {
     private JSONArray getArticle() {
         JSONArray rv = null;
         try {
-            DatabaseRetrieve retriever = new DatabaseRetrieve();
-            retriever.execute("getArticleText.php?id=" + id);
+            DatabaseRetriever retriever = new DatabaseRetriever();
+            retriever.execute("GET", "getArticleText.php?id=" + id);
             rv = retriever.get(1000, TimeUnit.MILLISECONDS);
         } catch (ExecutionException | InterruptedException | TimeoutException e) {
             e.printStackTrace();
