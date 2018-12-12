@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +23,9 @@ public class SearchStatusBar extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.search_statusbar, container, false);
         SearchView searchView = rootView.findViewById(R.id.search_statusbar_fragment);
+        ImageView settingsBtn = rootView.findViewById(R.id.search_statusbar_settings);
+
         if (searchView != null) {
-
-
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                 @Override
@@ -42,6 +43,11 @@ public class SearchStatusBar extends Fragment {
                 }
             });
         }
+
+        settingsBtn.setOnClickListener((v) -> {
+            // Handle settings
+        });
+
         return rootView;
     }
 
