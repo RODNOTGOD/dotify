@@ -31,27 +31,12 @@ public class SongViewAdapter extends RecyclerView.Adapter<SongViewAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         Log.d(TAG,"onBindViewHolder: called.");
-        holder.songTitle.setText(mSongs.get(i).getSongName());
-        holder.artistName.setText(mSongs.get(i).getSongArtist().getName());
+        holder.songTitle.setText(mSongs.get(i).getTitle());
+        holder.artistName.setText(mSongs.get(i).getArtist());
 
-        holder.playButton.setOnClickListener(new View.OnClickListener () {
-            @Override
-            public void onClick(View view){
-                Log.d(TAG, "onClickPlayButton: clicked on: " + mSongs.get(i).getSongName());
-            }
-        });
-        holder.likeButton.setOnClickListener(new View.OnClickListener () {
-            @Override
-            public void onClick(View view){
-                Log.d(TAG, "onClickLikeButton: clicked on: " + mSongs.get(i).getSongName());
-            }
-        });
-        holder.dislikeButton.setOnClickListener(new View.OnClickListener () {
-            @Override
-            public void onClick(View view){
-                Log.d(TAG, "onClickDislikeButton: clicked on: " + mSongs.get(i).getSongName());
-            }
-        });
+        holder.playButton.setOnClickListener(view -> Log.d(TAG, "onClickPlayButton: clicked on: " + mSongs.get(i).getTitle()));
+        holder.likeButton.setOnClickListener(view -> Log.d(TAG, "onClickLikeButton: clicked on: " + mSongs.get(i).getTitle()));
+        holder.dislikeButton.setOnClickListener(view -> Log.d(TAG, "onClickDislikeButton: clicked on: " + mSongs.get(i).getTitle()));
     }
 
     @Override

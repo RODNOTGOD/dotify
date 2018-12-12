@@ -18,10 +18,11 @@ public class Search extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
-        searchTermLabel = findViewById(R.id.searchTermString);
-        searchTermLabel.setText(MainActivity.searchTerm);
 
-        initSongs();
+        Bundle bundle = getIntent().getExtras();
+
+        searchTermLabel = findViewById(R.id.searchTermString);
+        searchTermLabel.setText(bundle.getString("query"));
 
         RecyclerView recyclerView = findViewById(R.id.searchResultsRecycleView);
         recyclerView.setHasFixedSize(true);
@@ -32,15 +33,6 @@ public class Search extends AppCompatActivity {
 
         SongViewAdapter adapter = new SongViewAdapter(mSongs);
         recyclerView.setAdapter(adapter);
-    }
-
-    public void initSongs(){
-        mSongs.add(new Song("Hello Everyone","The Demos"));
-        mSongs.add(new Song("Demo Song 1","The Demos"));
-        mSongs.add(new Song("Demo Song 2","The Demos"));
-        mSongs.add(new Song("Demo Song 4","The Demos"));
-        mSongs.add(new Song("The Last Demo Song","The Demos"));
-        mSongs.add(new Song("The Last Demo Song Part 2","The Demos"));
     }
 
 }

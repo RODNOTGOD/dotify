@@ -37,7 +37,6 @@ public class Album {
 
     public void print(){
         System.out.println("Album Title: " + title);
-        System.out.println("Album Artist: " + artist.getName());
-        }
-
+        System.out.println("Album Artist: " + artist);
+    }
 }

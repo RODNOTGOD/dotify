@@ -31,8 +31,7 @@ public class SearchStatusBar extends Fragment {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     System.out.println("onQueryTextSubmit");
-                    MainActivity.searchTerm = searchView.getQuery();
-                    openSearchResults();
+                    openSearchResults(searchView.getQuery().toString());
                     return false;
                 }
 
@@ -45,14 +44,16 @@ public class SearchStatusBar extends Fragment {
         }
 
         settingsBtn.setOnClickListener((v) -> {
-            // Handle settings
+            Intent intent = new Intent(getContext(), SettingsActivity.class);
+            startActivity(intent);
         });
 
         return rootView;
     }
 
-    private void openSearchResults() {
+    private void openSearchResults(String query) {
         Intent intent = new Intent(getActivity(), Search.class);
+        intent.putExtra("query", query);
         startActivity(intent);
     }
 }
