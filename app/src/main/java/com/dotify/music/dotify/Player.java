@@ -12,7 +12,7 @@ import java.util.ListIterator;
 class Player {
     private static final Player ourInstance = new Player();
 
-    private static final String SERVER_IP = DatabaseRetrieve.SERVER_IP;
+    private static final String SERVER_IP = DatabaseRetriever.SERVER_IP;
     private boolean songsLoaded;
     private boolean initialized;
 

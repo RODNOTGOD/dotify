@@ -32,7 +32,7 @@ public class Article extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         if (b != null) {
             id = b.getInt("id");
-            webView.loadUrl("http://" + DatabaseRetrieve.SERVER_IP + "/getArticleText.php?id=" + id);
+            webView.loadUrl("http://" + DatabaseRetriever.SERVER_IP + "/getArticleText.php?id=" + id);
         }
     }
 }

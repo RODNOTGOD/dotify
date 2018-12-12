@@ -1,16 +1,11 @@
 package com.dotify.music.dotify;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -83,9 +77,9 @@ public class UserLibrary extends Fragment {
     }
 
     private JSONArray getSongs() {
-        DatabaseRetrieve music = new DatabaseRetrieve();
+        DatabaseRetriever music = new DatabaseRetriever();
         try {
-            music.execute("getAllSongs.php");
+            music.execute("GET", "getAllSongs.php");
             return music.get(1000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             e.printStackTrace();

@@ -94,11 +94,12 @@
             android:layout_weight="1">
 
             <Button
+                android:id="@+id/musicplayer_play"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:translationZ="0dp"
-                android:id="@+id/musicplayer_play"
-                android:background="@drawable/round_button" />
+                android:background="@drawable/round_button"
+                android:onClick="none"
+                android:translationZ="0dp" />
 
             <ImageView
                 android:id="@+id/player_view"

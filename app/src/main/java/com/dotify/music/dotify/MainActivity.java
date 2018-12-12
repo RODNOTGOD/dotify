@@ -14,10 +14,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static User currentUser;
+    public static String SIGN_RESTORE = "sign_in";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSharedPreferences("SIGN", MODE_PRIVATE).edit().putBoolean(SIGN_RESTORE, true).apply();
         addStartupFragment();
 
     }
@@ -28,5 +32,19 @@ public class MainActivity extends AppCompatActivity {
         NewsFeed newsFeed = new NewsFeed();
         transaction.add(R.id.main_feed_fragment, newsFeed);
         transaction.commit();
+    }
+
+    public void logoutButtonClicked(View v){
+        Log.i("Login", "User logged out");
+        getSharedPreferences("SIGN", MODE_PRIVATE).edit().putBoolean(SIGN_RESTORE, false).apply();
+        Intent intent = new Intent(this, Login.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }

@@ -19,4 +19,5 @@
     <string name="pref_title_ringtone">pref_title_ringtone</string>
     <string name="pref_title_vibrate">pref_title_vibrate</string>
     <string name="pref_ringtone_silent">silent</string>
+    <string name="new_user"><u>New User</u></string>
 </resources>
