@@ -1,5 +1,11 @@
 package com.dotify.music.dotify;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,10 +20,13 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -26,11 +35,15 @@ import java.util.concurrent.TimeoutException;
 public class UserLibrary extends Fragment {
 
     private JSONArray userLibrary;
+    private TextView music_statusbar;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.user_library, container, false);
+
+        music_statusbar = getActivity().findViewById(R.id.music_statusbar_fragment);
+
         JSONArray userLibrary = getSongs();
         if (userLibrary == null){
             rootView = ErrorDisplay.displayError("Failed to connect to server", this, R.id.main_feed_fragment);
@@ -52,7 +65,6 @@ public class UserLibrary extends Fragment {
             String[] from = {"artist"};
             int[] to = {R.id.artist_display_title};
 
-            System.out.println(adaptedArtists);
             View finalRootView = rootView;
             SimpleAdapter adapter = new SimpleAdapter(this.getContext(), adaptedArtists, R.layout.artist_display, from, to) {
                 @Override
@@ -83,13 +95,17 @@ public class UserLibrary extends Fragment {
 
     private HashMap<String, Artist> buildLibrary(@NonNull JSONArray data){
         HashMap<String, Artist> discography = new HashMap<>();
-        String artistName, albumName, songName;
+        String artistName, albumName, songName, songUrl;
+        int track;
 
         for (int i = 0; i < data.length(); i++) {
             try {
-                artistName = data.getJSONObject(i).getString("artist");
-                albumName = data.getJSONObject(i).getString("album");
-                songName = data.getJSONObject(i).getString("song");
+                JSONObject item = data.getJSONObject(i);
+                artistName = item.getString("artist");
+                albumName = item.getString("album");
+                songName = item.getString("song");
+                songUrl = item.getString("url");
+                track = item.getInt("track");
             } catch (JSONException e) {
                 e.printStackTrace();
                 continue;
@@ -97,7 +113,7 @@ public class UserLibrary extends Fragment {
             Artist artist = discography.get(artistName);
             if (artist == null) artist = new Artist(artistName);
             Album album = artist.addAlbumIfEmpty(albumName);
-            album.addSong(songName);
+            album.addSong(songName, songUrl, track);
             artist.updateAlbum(album);
             discography.put(artistName, artist);
         }
@@ -136,20 +152,50 @@ public class UserLibrary extends Fragment {
 
     private void updateViewToSongs(View rootView, Album album) {
         GridView gridView = rootView.findViewById(R.id.library_albums);
-        HashMap<String, Song> songList = album.getSongs();
+        TreeMap<Integer, Song> songList = album.getSongs();
         ArrayList<HashMap<String, String>> adaptedSongs = new ArrayList<>();
 
-        for (String songTitle : songList.keySet()) {
+        for (Integer id : songList.keySet()) {
             HashMap<String, String> songs = new HashMap<>();
-            Song song = songList.get(songTitle);
-            songs.put("_song", songTitle);
+            Song song = songList.get(id);
+            songs.put("_song", song.getTitle());
+            songs.put("key", id.toString());
             adaptedSongs.add(songs);
         }
 
         String[] from = {"_song"};
         int[] to = {R.id.artist_display_title};
-        SimpleAdapter adapter = new SimpleAdapter(getContext(), adaptedSongs, R.layout.artist_display, from, to);
+        SimpleAdapter adapter = new SimpleAdapter(getContext(), adaptedSongs, R.layout.artist_display, from, to) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view =  super.getView(position, convertView, parent);
+                TextView textView = view.findViewById(R.id.artist_display_title);
+                textView.setOnClickListener((v) -> playSong(songList.get(Integer.parseInt(adaptedSongs.get(position).get("key")))));
+                return view;
+            }
+        };
         gridView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    private void playSong(Song song) {
+        Intent intent = new Intent(getContext(), MusicPlayer.class);
+        Player player = Player.getInstance();
+        player.buildQueue(new Song[]{song});
+        player.playNewSelected();
+        startActivityForResult(intent, 10002);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 10002 && resultCode == Activity.RESULT_OK) {
+            Player player = Player.getInstance();
+            Song song = player.getCurrentSong();
+            if (song != null) {
+                music_statusbar.setText(song.getArtist() + " - " + song.getTitle());
+                music_statusbar.setSelected(true);
+            }
+        }
     }
 }

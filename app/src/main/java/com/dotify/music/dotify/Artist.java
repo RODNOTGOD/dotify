@@ -15,7 +15,7 @@ public class Artist {
     Album addAlbumIfEmpty(String albumName) {
         Album album = discography.get(albumName);
         if (album == null) {
-            album = new Album(albumName);
+            album = new Album(name, albumName);
             discography.put(albumName, album);
         }
         return album;

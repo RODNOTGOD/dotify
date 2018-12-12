@@ -4,7 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="@color/purpleDrapes"
+    android:singleLine="true"
+    android:scrollHorizontally="true"
+    android:marqueeRepeatLimit="marquee_forever"
+    android:ellipsize="marquee"
     android:gravity="center"
-    android:text="MUSIC PLAYING SHOWS HERE"
+    android:text=""
     android:textSize="20dp"
     android:textColor="#FFF" />

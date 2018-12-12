@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class StatusBar extends Fragment {
-    public StatusBar() {
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

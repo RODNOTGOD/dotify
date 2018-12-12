@@ -12,4 +12,10 @@
             <solid android:color="@color/music_button_pressed_background" />
         </shape>
     </item>
+    <item android:state_enabled="false">
+        <shape android:shape="oval">
+            <stroke android:width="5px" android:color="#333"/>
+            <solid android:color="#fff" />
+        </shape>
+    </item>
 </selector>
