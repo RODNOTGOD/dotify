@@ -34,4 +34,10 @@ public class Album {
     public void addSong(String songName, String url, int id) {
         songs.put(id, new Song(artist, title, songName, url));
     }
+
+    public void print(){
+        System.out.println("Album Title: " + title);
+        System.out.println("Album Artist: " + artist.getName());
+        }
+
 }
