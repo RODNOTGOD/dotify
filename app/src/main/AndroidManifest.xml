@@ -23,13 +23,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".MusicPlayer" />
         <activity android:name=".Article" />
         <activity android:name=".Alarm" />
         <activity android:name=".Search" />
         <activity android:name=".Register"/>
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".SettingsActivity"
+            android:theme="@style/PreferenceHeaderTheme"/>
 
         <receiver android:name=".AlarmReceiver" />
 

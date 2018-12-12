@@ -17,9 +17,12 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.List;
+
+import static com.dotify.music.dotify.MainActivity.SIGN_RESTORE;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -130,6 +133,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public void onHeaderClick(Header header, int position) {
+        super.onHeaderClick(header, position);
+        if (header.id == R.id.logoutButton) {
+            Log.i("Login", "User logged out");
+            getSharedPreferences("SIGN", MODE_PRIVATE).edit().putBoolean(SIGN_RESTORE, false).apply();
+            Intent intent = new Intent(this, Login.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         }
     }
 

@@ -18,4 +18,9 @@
         <item name="colorControlActivated">#aaa</item>
     </style>
 
+    <style name="PreferenceHeaderTheme" parent="Theme.AppCompat">
+        <item name="android:background">#424242</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
 </resources>
